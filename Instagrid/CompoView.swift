@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CompoView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class CompoView: UIView, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     /*
     // Only override draw() if you perform custom drawing.
@@ -124,6 +124,7 @@ class CompoView: UIView, UIImagePickerControllerDelegate, UINavigationController
                     imagePicker.allowsEditing = false
                     imagePicker.delegate = self
                     controller.present(imagePicker, animated: false, completion: nil)
+            
         }
 
     }
@@ -145,8 +146,9 @@ class CompoView: UIView, UIImagePickerControllerDelegate, UINavigationController
         controller.dismiss(animated: true, completion: nil)
         images[index].image = currentImage
         buttons[index].setBackgroundImage(UIGraphicsGetImageFromCurrentImageContext(), for: .normal)
+        imageToShare = asImage()
     }
-
+ 
         
 
     
@@ -187,7 +189,7 @@ class CompoView: UIView, UIImagePickerControllerDelegate, UINavigationController
         }//End Style switch
         
         imageToShare = asImage()
-        
+
     }//End SetStyle Function
     
     
