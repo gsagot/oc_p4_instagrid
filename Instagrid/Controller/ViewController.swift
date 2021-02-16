@@ -26,9 +26,13 @@ class ViewController: UIViewController {
             mainView.isLandscape = true
         }
 
-        // Build main view and all subviews
-        mainView.arrangeSubViews (controller: self)
 
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Build main view and all subviews
+        mainView.layoutSubview(controller: self)
     }
     
     
@@ -42,7 +46,8 @@ class ViewController: UIViewController {
             mainView.isLandscape = false
             
         }
-            mainView.updateWhenOrientationChange()
+        mainView.updateSubviews()
+
     }
 
     
