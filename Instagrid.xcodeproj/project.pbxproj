@@ -60,17 +60,49 @@
 		CA28BEEB25C352ED00660B9B /* Instagrid */ = {
 			isa = PBXGroup;
 			children = (
-				CA28BEEC25C352ED00660B9B /* AppDelegate.swift */,
-				CA28BEEE25C352ED00660B9B /* SceneDelegate.swift */,
-				CA28BEF025C352ED00660B9B /* ViewController.swift */,
-				CAAF08F125DA5C38009381BC /* MainView.swift */,
-				CAEF998025C8071200C7F0AC /* CompoView.swift */,
-				CA28BEF225C352ED00660B9B /* Main.storyboard */,
-				CA28BEF525C352ED00660B9B /* Assets.xcassets */,
-				CA28BEF725C352ED00660B9B /* LaunchScreen.storyboard */,
+				CAAA166A25DBCFF30067EFE1 /* Supporting Files */,
+				CAAA166925DBCFD80067EFE1 /* Model */,
+				CAAA166825DBCFD00067EFE1 /* View */,
+				CAAA166725DBCF1A0067EFE1 /* Controller */,
 				CA28BEFA25C352ED00660B9B /* Info.plist */,
 			);
 			path = Instagrid;
+			sourceTree = "<group>";
+		};
+		CAAA166725DBCF1A0067EFE1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CA28BEF025C352ED00660B9B /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAAA166825DBCFD00067EFE1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAEF998025C8071200C7F0AC /* CompoView.swift */,
+				CA28BEF225C352ED00660B9B /* Main.storyboard */,
+				CA28BEF725C352ED00660B9B /* LaunchScreen.storyboard */,
+				CAAF08F125DA5C38009381BC /* MainView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAAA166925DBCFD80067EFE1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAAA166A25DBCFF30067EFE1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CA28BEEE25C352ED00660B9B /* SceneDelegate.swift */,
+				CA28BEF525C352ED00660B9B /* Assets.xcassets */,
+				CA28BEEC25C352ED00660B9B /* AppDelegate.swift */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

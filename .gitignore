@@ -1,6 +1,10 @@
 .DS_Store
 Instagrid/.DS_Store
 Instagrid/exports/.DS_Store
+Instagrid/Controller/.DS_Store
+Instagrid/View/.DS_Store
+Instagrid/Model/.DS_Store
+Instagrid/Supporting Files/.DS_Store
 *.xcuserstate
 Instagrid.xcodeproj/project.xcworkspace/
 Instagrid.xcodeproj/xcuserdata/
