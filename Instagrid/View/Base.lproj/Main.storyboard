@@ -11,7 +11,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Instagrid" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="MainView" customModule="Instagrid" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -23,7 +23,7 @@
                                     <constraint firstAttribute="width" constant="300" id="fbz-6f-azW"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-h0-1NL">
+                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d7r-h0-1NL">
                                 <rect key="frame" x="10" y="468" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="E5L-xy-2L9"/>
@@ -31,10 +31,10 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="Layout 2"/>
                                 <connections>
-                                    <action selector="setStyleBigBottom:" destination="8bC-Xf-vdC" eventType="touchUpInside" id="X2q-Th-EHp"/>
+                                    <action selector="setStyle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mgg-YN-Qmw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edq-ms-QbK">
+                            <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edq-ms-QbK">
                                 <rect key="frame" x="120" y="468" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="g2l-ML-wp9"/>
@@ -42,10 +42,10 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="Layout 1"/>
                                 <connections>
-                                    <action selector="setStyleBigTop:" destination="8bC-Xf-vdC" eventType="touchUpInside" id="HKG-CZ-neP"/>
+                                    <action selector="setStyle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G56-VT-WSS"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gd2-lG-lfy">
+                            <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gd2-lG-lfy">
                                 <rect key="frame" x="230" y="468" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="F2W-iQ-3kB"/>
@@ -53,7 +53,7 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="Layout 3"/>
                                 <connections>
-                                    <action selector="setStyleStandard:" destination="8bC-Xf-vdC" eventType="touchUpInside" id="qc2-Av-Agb"/>
+                                    <action selector="setStyle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="76K-Zi-8T7"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Selected" translatesAutoresizingMaskIntoConstraints="NO" id="THg-0Q-R11">
@@ -154,17 +154,17 @@
                                 <exclude reference="a2l-eG-cBk"/>
                                 <exclude reference="qCv-0y-zGj"/>
                                 <exclude reference="oVk-Km-kOi"/>
-                                <exclude reference="PRc-TY-Ptu"/>
-                                <exclude reference="PWo-kk-oYs"/>
-                                <exclude reference="Tj6-fr-ERc"/>
-                                <exclude reference="qfs-Qo-HxH"/>
-                                <exclude reference="wSa-Kd-VPK"/>
                                 <exclude reference="2zs-lu-8Tu"/>
                                 <exclude reference="C73-VW-xrY"/>
                                 <exclude reference="GXd-p4-qDo"/>
                                 <exclude reference="Own-fS-HIM"/>
                                 <exclude reference="UgW-YG-YQ8"/>
                                 <exclude reference="dxl-6g-72H"/>
+                                <exclude reference="PRc-TY-Ptu"/>
+                                <exclude reference="PWo-kk-oYs"/>
+                                <exclude reference="Tj6-fr-ERc"/>
+                                <exclude reference="qfs-Qo-HxH"/>
+                                <exclude reference="wSa-Kd-VPK"/>
                                 <exclude reference="GgP-F9-9Ws"/>
                                 <exclude reference="Wjh-9w-Wz4"/>
                                 <exclude reference="bv2-kp-v8Y"/>
@@ -184,12 +184,6 @@
                                 <include reference="qCv-0y-zGj"/>
                                 <exclude reference="1dP-Qa-7Ib"/>
                                 <exclude reference="oVk-Km-kOi"/>
-                                <exclude reference="PRc-TY-Ptu"/>
-                                <include reference="PWo-kk-oYs"/>
-                                <exclude reference="Tj6-fr-ERc"/>
-                                <exclude reference="qfs-Qo-HxH"/>
-                                <exclude reference="rIo-Pz-eg4"/>
-                                <exclude reference="wSa-Kd-VPK"/>
                                 <exclude reference="2zs-lu-8Tu"/>
                                 <exclude reference="C73-VW-xrY"/>
                                 <include reference="GXd-p4-qDo"/>
@@ -198,6 +192,12 @@
                                 <exclude reference="Xla-qj-NAy"/>
                                 <exclude reference="cFS-IF-4ic"/>
                                 <include reference="dxl-6g-72H"/>
+                                <exclude reference="PRc-TY-Ptu"/>
+                                <include reference="PWo-kk-oYs"/>
+                                <exclude reference="Tj6-fr-ERc"/>
+                                <exclude reference="qfs-Qo-HxH"/>
+                                <exclude reference="rIo-Pz-eg4"/>
+                                <exclude reference="wSa-Kd-VPK"/>
                                 <exclude reference="its-LC-sx2"/>
                                 <exclude reference="GgP-F9-9Ws"/>
                                 <exclude reference="JR8-Ia-O5F"/>
@@ -209,19 +209,16 @@
                                 <include reference="rsQ-eV-cci"/>
                             </mask>
                         </variation>
-                        <connections>
-                            <outlet property="arrow" destination="hcq-J9-TGa" id="R9U-Kh-wDu"/>
-                            <outlet property="composition" destination="4oF-HC-Bge" id="fX6-xa-qjb"/>
-                            <outlet property="layoutButtonLeft" destination="d7r-h0-1NL" id="eWN-q9-3na"/>
-                            <outlet property="layoutButtonMiddle" destination="Edq-ms-QbK" id="lsV-Tq-GNP"/>
-                            <outlet property="layoutButtonRight" destination="gd2-lG-lfy" id="vWE-Mb-V5T"/>
-                            <outlet property="selectedImage" destination="THg-0Q-R11" id="Oa6-W7-Pyj"/>
-                            <outlet property="selectedLayoutConstraintX" destination="PU3-h6-iwr" id="t8g-6P-tlL"/>
-                            <outlet property="selectedLayoutConstraintY" destination="Wjh-9w-Wz4" id="PIz-Jg-k7R"/>
-                        </connections>
                     </view>
                     <connections>
-                        <outlet property="mainView" destination="8bC-Xf-vdC" id="mdR-uj-DcX"/>
+                        <outlet property="arrow" destination="hcq-J9-TGa" id="a0C-Ko-ZxV"/>
+                        <outlet property="composition" destination="4oF-HC-Bge" id="RMC-lN-DjV"/>
+                        <outlet property="layoutButtonLeft" destination="d7r-h0-1NL" id="pHg-yT-F7q"/>
+                        <outlet property="layoutButtonMiddle" destination="Edq-ms-QbK" id="B9C-uR-xNa"/>
+                        <outlet property="layoutButtonRight" destination="gd2-lG-lfy" id="IJI-hn-17B"/>
+                        <outlet property="selectedImage" destination="THg-0Q-R11" id="gTL-bj-we2"/>
+                        <outlet property="selectedImageConstraintToUpdateInLanscape" destination="Wjh-9w-Wz4" id="jB9-Rx-35d"/>
+                        <outlet property="selectedImageConstraintToUpdateInPortrait" destination="PU3-h6-iwr" id="sTa-4b-NlG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
