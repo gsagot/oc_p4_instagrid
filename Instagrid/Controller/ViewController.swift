@@ -23,6 +23,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var gestureOnlyLeftAndUp:Bool = false
     
     var imagePicker = UIImagePickerController()
+
     
     // MARK: - PREPARE ALL SUBVIEWS
     
@@ -50,6 +51,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     // MARK: - UPDATE WITH DEVICE ORIENTATION
+    
+    override func viewDidAppear(_ animated: Bool) {
+      // popup()
+    }
+    
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // Orientation
@@ -86,6 +92,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    // MARK: - POPUP
+    func popup () {
+        
+        let ac = UIAlertController(title: "Instagrid", message: "Setting up your creation first.\n Then you'll be able to share it.", preferredStyle: .alert)
+    
+        ac.view.tintColor = .blue
+        let test = UIAlertAction(title: "Create", style: .default, handler: nil)
+        ac.addAction(test)
+        present(ac, animated: true)
+        
+    }
+
+    
     // MARK: - ADD IMAGE IN COMPOSITION
     
     @objc func compositionButtonClicked(sender:UIButton) {
@@ -101,6 +120,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     imagePicker.allowsEditing = false
                     imagePicker.delegate = self
                     self.present(imagePicker, animated: false, completion: nil)
+           
         }
     }
     
@@ -112,10 +132,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.dismiss(animated: true, completion: nil)
         composition.images[composition.index].image = composition.currentImage
         composition.buttons[composition.index].setBackgroundImage(UIGraphicsGetImageFromCurrentImageContext(), for: .normal)
-        composition.imageToShare = composition.asImage()
     }
     
     // MARK: - SHARE IMAGE
+    
+    // check if user setting up his creation and put all images in slots
+    func checkCompoIsReady() -> Bool{
+        var tests = composition.images
+        var result:Bool=true
+
+        switch composition.style {
+        case .bigbottom:
+            tests.remove(at: 3)
+        case .bigtop:
+            tests.remove(at: 1)
+        default:
+            break
+        }
+
+        for i in 0..<tests.count where __CGSizeEqualToSize(tests[i].image!.size , CGSize(width: 0,height: 0)){
+                result = false
+                break
+        }
+
+       return result
+            
+    }
     
     // User Drag inside composition...
     @objc func dragImageLayout(_ sender: UIPanGestureRecognizer) {
@@ -142,9 +184,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // ...Then composition is share with cancelled or ended states
     private func shareCompositionView() {
-        let item = [composition.imageToShare]
-        let ac = UIActivityViewController(activityItems: item as [Any], applicationActivities: nil)
-        self.present(ac, animated: true)
+        if checkCompoIsReady() {
+            let item = [composition.imageToShare]
+            let ac = UIActivityViewController(activityItems: item as [Any], applicationActivities: nil)
+            self.present(ac, animated: true)
+        }
+        else
+        {
+            popup()
+        }
+
         composition.transform = .identity
         gestureOnlyLeftAndUp = false
     }
