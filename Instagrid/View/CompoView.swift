@@ -24,23 +24,22 @@ class CompoView: UIView {
     var imageToShare = UIImage()
     
     let imgSize: Double = round(127.5)
-
+    
     
     enum Style {
         case bigtop, bigbottom, standard
     }
     
     // Watch properties and update with selection
-    var style: Style = .bigbottom{
+    var style: Style = .bigbottom {
         didSet {
             presentStyle(style)
             imageToShare = asImage()
         }
     }
     
-    
     // Image that could be share is updated
-    func asImage() -> UIImage {
+    private func asImage() -> UIImage {
         let renderer = UIGraphicsImageRenderer(bounds: bounds)
         return renderer.image { rendererContext in
             layer.render(in: rendererContext.cgContext)
@@ -48,9 +47,15 @@ class CompoView: UIView {
     }
     
     // MARK: - PREPARE ALL SUBVIEWS
+    func layoutCompoViewOnLoad() {
+        layoutImages()
+        layoutButtons()
+        style = .bigbottom
+    }
+    
     
     // Prepare all images
-    func layoutImages (){
+    private func layoutImages() {
         for i in 0...1
         {
             for j in 0...1
@@ -78,7 +83,7 @@ class CompoView: UIView {
         }
     }
     // prepare all buttons
-    func layoutButtons () {
+    private func layoutButtons() {
         for i in 0...3 {
             let buttonImage = UIImage(named: "Plus")
             let button = UIButton()
@@ -96,7 +101,7 @@ class CompoView: UIView {
     // MARK: - UPDATE LAYOUT WITH USER CHOICE
     
     // reset all images and buttons are in 2X2 grid
-    func reset () {
+    private func reset() {
         for i in 0...1 {
             for j in 0...1 {
                 // FIND POSITION
@@ -114,7 +119,7 @@ class CompoView: UIView {
         }
     }
     // Update everything with user choose 
-    func presentStyle(_ style: Style) {
+    private func presentStyle(_ style: Style) {
         reset()
         switch style {
         case .bigtop:

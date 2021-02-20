@@ -38,23 +38,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             isLandscape = true
         }
         changeArrowImageIfLandscape()
-        // Layout main view and all subviews
-        composition.layoutImages()
-        composition.layoutButtons()
-        
-        // Choose the style to start with
-        composition.style = .bigbottom
-
+        // Layout composition view and all subviews
+        composition.layoutCompoViewOnLoad()
         // Add actions to buttons in the controller
         addAction()
 
     }
     
     // MARK: - UPDATE WITH DEVICE ORIENTATION
-    
-    override func viewDidAppear(_ animated: Bool) {
-      // popup()
-    }
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -64,7 +55,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     // Find orientation with UIDevice
-    func findOrientation(){
+    private func findOrientation(){
         if UIDevice.current.orientation.isLandscape {
             isLandscape = true
         }
@@ -73,7 +64,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func changeArrowImageIfLandscape(){
+    private func changeArrowImageIfLandscape(){
         if isLandscape {
             arrow.image = UIImage(named: "Arrow Left")
         }else{
@@ -84,7 +75,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: - ADD ACTION TO BUTTONS IN CODE
     
-    func addAction(){
+    private func addAction(){
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragImageLayout(_:)))
         composition.addGestureRecognizer(panGestureRecognizer)
         for i in 0..<composition.buttons.count{
@@ -93,13 +84,22 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     // MARK: - POPUP
-    func popup () {
+    
+    private func presentUIAlertController() {
         
         let ac = UIAlertController(title: "Instagrid", message: "Setting up your creation first.\n Then you'll be able to share it.", preferredStyle: .alert)
     
         ac.view.tintColor = .blue
         let test = UIAlertAction(title: "Create", style: .default, handler: nil)
         ac.addAction(test)
+        present(ac, animated: true)
+        
+    }
+    
+    private func presentUIActivityController() {
+        
+        let item = [composition.imageToShare]
+        let ac = UIActivityViewController(activityItems: item as [Any], applicationActivities: nil)
         present(ac, animated: true)
         
     }
@@ -113,7 +113,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     // Open Images folder to choose an image
-    func pickImage ()
+    private func pickImage ()
     {
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
                     imagePicker.sourceType = .savedPhotosAlbum
@@ -137,7 +137,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // MARK: - SHARE IMAGE
     
     // check if user setting up his creation and put all images in slots
-    func checkCompoIsReady() -> Bool{
+    private func checkCompoIsReady() -> Bool{
         var tests = composition.images
         var result:Bool=true
 
@@ -145,11 +145,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         case .bigbottom:
             tests.remove(at: 3)
         case .bigtop:
-            tests.remove(at: 1)
+            tests.remove(at: 2)
         default:
             break
         }
-
+        print (tests.count)
+        print (composition.style)
         for i in 0..<tests.count where __CGSizeEqualToSize(tests[i].image!.size , CGSize(width: 0,height: 0)){
                 result = false
                 break
@@ -184,18 +185,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // ...Then composition is share with cancelled or ended states
     private func shareCompositionView() {
+        
         if checkCompoIsReady() {
-            let item = [composition.imageToShare]
-            let ac = UIActivityViewController(activityItems: item as [Any], applicationActivities: nil)
-            self.present(ac, animated: true)
+            presentUIActivityController()
         }
-        else
-        {
-            popup()
+        else {
+            presentUIAlertController()
         }
 
         composition.transform = .identity
         gestureOnlyLeftAndUp = false
+
     }
     
     
