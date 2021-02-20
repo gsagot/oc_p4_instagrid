@@ -8,19 +8,18 @@
 import UIKit
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
-    let stackHorizontalTop      = UIStackView()
-    let stackHorizontalBottom   = UIStackView()
-    let stackVertical           = UIStackView()
-    var gridLayout              = [UIButton]()
+    
+    var arrow                   = UIImageView()
     var styleButtons            = [UIButton]()
     var stackStyleButtons       = UIStackView()
-    var composition                  = UIView()
-    var currentStyle:Style      = .standard
+    var composition             = CompoView()
+    var instagridTitle          = UIImageView()
     var index = Int()
     var imagePicker = UIImagePickerController()
     var currentImage = UIImage()
     var isLandscape:Bool = false
+    
+    var gestureOnlyLeftAndUp:Bool = false
     
     enum Style {
         case bigtop, bigbottom, standard
@@ -48,42 +47,34 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidAppear(_ animated: Bool) {
         
         // Set composition view
-        composition.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+        //composition.backgroundColor = UIColor(red: 16, green: 102, blue: 152, alpha: 1)
         composition.frame = CGRect(x:0,y:0,width:300,height:300)
         // And add AutoLayout.
         composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
         composition.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
-        // Add to main view.
+        // Layout subviews in composition
+        composition.layoutCompoViewOnLoad()
+        // Prepare  buttons
+        addAction()
+        // Add composition to main view.
         view.addSubview(composition)
-        
-        // Array of 4 UIImageView
-        prepareAllImages()
-        
-        // Prepare a first horizontal stack view with first images from previous array (index 0 and 1).
-        stackHorizontalTop.frame = CGRect(x:0,y:0,width:271,height:128)
-        arrangeStack(stackHorizontalTop, axis: .horizontal, with: [gridLayout[0],gridLayout[1]])
-        
-        // Prepare a second horizontal stack view with first images from previous array (index 2 and 3).
-        stackHorizontalBottom.frame = CGRect(x:0,y:0,width:271,height:128)
-        arrangeStack (stackHorizontalBottom, axis: .horizontal, with: [gridLayout[2],gridLayout[3]])
-        
-        // Prepare a vertical stack in order to host the two previous horizontal stack.
-        stackVertical.frame = CGRect(x:15,y:15,width:271,height:271)
-        arrangeStack (stackVertical, axis:.vertical, with: [stackHorizontalTop,stackHorizontalBottom])
-        
-        // Add StackVertical in myView
-        composition.addSubview(stackVertical)
-        
+
         // Prepare Buttons that choose layout ...
         createStyleButtons ()
         
         // Selected
         styleButtons[2].setImage(UIImage(named: "Selected"), for: .normal)
         
-        // Put them in a stack
+        // Put them in a stack and add to main view
         view.addSubview(stackStyleButtons)
         
-        updateSubviews()
+        // Add arrow
+        view.addSubview(arrow)
+        
+        // Add Instagrid title
+        instagridTitle.image = UIImage(named: "Instagrid")
+        view.addSubview(instagridTitle)
+  
     }
     
     
@@ -97,52 +88,151 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             isLandscape = false
             
         }
-        updateSubviews()
+        
 
     }
     
-    func updateSubviews() {
- 
+    override func viewDidLayoutSubviews() {
         if isLandscape == true {
             placeStyleButtonsInStack(inAxis: .vertical)
             
         } else {
             placeStyleButtonsInStack(inAxis: .horizontal)
-            
         }
-    
+        updateArrow()
+        updateInstagridTitle()
+        
     }
     
-    // MARK: - SET COMPOSITION
     
-    func arrangeStack (_ stack: UIStackView, axis: NSLayoutConstraint.Axis, with: [UIView]){
-        stack.axis = axis
-        stack.distribution = .fillEqually;
-        stack.alignment = .fill;
-        stack.spacing = 15;
-        stack.translatesAutoresizingMaskIntoConstraints = true
+    func updateArrow(){
+        var center = CGPoint()
+        let ref = composition.center
+        arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
         
-        for i in 0...1{
-            stack.addArrangedSubview(with[i])
+        if isLandscape{
+            arrow.image = UIImage(named: "Arrow Left")
+            center = CGPoint(x: view.frame.maxX - ref.x - 150 - 20 - 10 , y: view.frame.midY)
+        }
+        else{
+            arrow.image = UIImage(named: "Arrow Up")
+            center = CGPoint(x: view.frame.midX, y: view.frame.maxY - ref.y - 150 - 20 - 10 )
         }
 
+        arrow.center = center
+        arrow.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
     }
     
-    
-    func prepareAllImages () {
-        for i in 0...3 {
-            let newButton = UIButton()
-            newButton.backgroundColor = UIColor(white: CGFloat(Float.random(in: 1...1)), alpha: 1)
-            newButton.setImage(UIImage(named: "Plus"), for: .normal)
-            newButton.tag = i
-            newButton.addTarget(self, action:#selector(buttonClicked), for: .touchUpInside)
-            newButton.imageView?.contentMode = .scaleAspectFill
-            
-            gridLayout.append(newButton)
-            
-        }
+    func updateInstagridTitle(){
+        var center = CGPoint()
+        instagridTitle.frame = CGRect(x: 0, y: 0, width: 116, height: 30)
         
+        if isLandscape{
+            center = CGPoint(x: view.frame.midX , y: view.frame.midY - 150 - 15)
+        }
+        else{
+            center = CGPoint(x: view.frame.midX , y: view.frame.minY + 30 + 15 )
+        }
+
+        instagridTitle.center = center
+        instagridTitle.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
     }
+    
+
+    // MARK: - ADD ACTION TO BUTTONS IN CODE
+     
+     private func addAction(){
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(dragImageLayout(_:)))
+         composition.addGestureRecognizer(panGestureRecognizer)
+        for i in 0..<composition.gridLayout.count{
+            composition.gridLayout[i].addTarget(self, action:#selector(buttonClicked), for: .touchUpInside)
+        }
+     }
+     
+     // MARK: - POPUP
+     
+     private func presentUIAlertController() {
+         
+         let ac = UIAlertController(title: "Instagrid", message: "Setting up your creation first.\n Then you'll be able to share it.", preferredStyle: .alert)
+     
+         ac.view.tintColor = .blue
+         let test = UIAlertAction(title: "Create", style: .default, handler: nil)
+         ac.addAction(test)
+         present(ac, animated: true)
+         
+     }
+     
+     private func presentUIActivityController() {
+         
+         let item = [composition.imageToShare]
+         let ac = UIActivityViewController(activityItems: item as [Any], applicationActivities: nil)
+         present(ac, animated: true)
+         
+     }
+    
+    // MARK: - SHARE IMAGE
+    
+    // check if user setting up his creation and put all images in slots
+    private func checkCompoIsReady() -> Bool{
+        var tests = composition.gridLayout
+        var result:Bool=true
+
+        switch composition.style {
+        case .bigbottom:
+            tests.remove(at: 3)
+        case .bigtop:
+            tests.remove(at: 2)
+        default:
+            break
+        }
+        for i in 0..<tests.count where __CGSizeEqualToSize((tests[i].imageView?.image!.size)! , CGSize(width: 13.5,height: 13.5)){
+            
+                result = false
+                break
+        }
+
+       return result
+            
+    }
+    
+    // User Drag inside composition...
+    @objc func dragImageLayout(_ sender: UIPanGestureRecognizer) {
+        if (sender.state == .began || sender.state == .changed) {
+            moveCompositionViewWith(gesture: sender)
+        }
+        else if (sender.state == .ended || sender.state == .cancelled) && gestureOnlyLeftAndUp == true{
+            shareCompositionView()
+        }
+    }
+    
+    // ...Composition moves for began and changed states...
+    private func moveCompositionViewWith(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: composition)
+        if isLandscape == true && translation.x < -0 {
+            composition.transform = CGAffineTransform(translationX: translation.x, y: 0)
+            gestureOnlyLeftAndUp = true
+        }
+        else if isLandscape == false && translation.y < -0 {
+            composition.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            gestureOnlyLeftAndUp = true
+        }
+    }
+    
+    // ...Then composition is share with cancelled or ended states
+    private func shareCompositionView() {
+        
+        if checkCompoIsReady() {
+            presentUIActivityController()
+        }
+        else {
+            presentUIAlertController()
+        }
+        composition.transform = .identity
+        gestureOnlyLeftAndUp = false
+
+    }
+   
+
     
     // MARK: - ADD USER IMAGE CHOICE IN COMPOSITION
     
@@ -172,7 +262,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             currentImage = pickedImage
         }
         self.dismiss(animated: true, completion: nil)
-        gridLayout[index].setImage(currentImage, for: .normal)
+        composition.gridLayout[index].setImage(currentImage, for: .normal)
         
     }
     
@@ -207,25 +297,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var center = CGPoint()
         var frame = CGRect()
         
-        
         switch inAxis {
-            
+        
         case .horizontal:
             stackStyleButtons.axis = .horizontal
-            center = CGPoint(x: view.bounds.midX, y: view.bounds.maxY - 80 - 20)
             frame = CGRect(x:0,y:0,width:300,height:80)
-            
+            center = CGPoint(x: view.frame.midX, y: view.frame.maxY - 20 - 40)
         default:
             stackStyleButtons.axis = .vertical
-            center = CGPoint(x: view.bounds.maxX - 80 - 20, y: view.bounds.midY )
             frame = CGRect(x:0,y:0,width:80,height:300)
+            center = CGPoint(x: view.frame.maxX - 20 - 40, y: view.frame.midY)
         }
         
-   
         stackStyleButtons.frame = frame
         stackStyleButtons.center = center
         stackStyleButtons.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
-
     }
     
     // Change layout
@@ -241,22 +327,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         switch sender.tag {
         
         case 0:
-            stackHorizontalTop.removeArrangedSubview(gridLayout[1])
-            stackHorizontalBottom.addArrangedSubview(gridLayout[3])
-            gridLayout[1].isHidden = true
-            gridLayout[3].isHidden = false
+            composition.style = .bigbottom
             
         case 1:
-            stackHorizontalBottom.removeArrangedSubview(gridLayout[3])
-            stackHorizontalTop.addArrangedSubview(gridLayout[1])
-            gridLayout[3].isHidden = true
-            gridLayout[1].isHidden = false
+            composition.style = .bigtop
             
         default:
-            stackHorizontalBottom.addArrangedSubview(gridLayout[3])
-            stackHorizontalTop.addArrangedSubview(gridLayout[1])
-            gridLayout[1].isHidden = false
-            gridLayout[3].isHidden = false
+            composition.style = .standard
             
         }
         
