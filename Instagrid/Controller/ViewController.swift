@@ -46,35 +46,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidAppear(_ animated: Bool) {
         
+        // Add arrow
+        self.view.addSubview(arrow)
+        // Add Instagrid title
+        instagridTitle.image = UIImage(named: "Instagrid")
+        view.addSubview(instagridTitle)
         // Set composition view
         //composition.backgroundColor = UIColor(red: 16, green: 102, blue: 152, alpha: 1)
         composition.frame = CGRect(x:0,y:0,width:300,height:300)
         // And add AutoLayout.
-        composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        composition.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
+        //autoLayout()
         // Layout subviews in composition
         composition.layoutCompoViewOnLoad()
         // Prepare  buttons
         addAction()
         // Add composition to main view.
         view.addSubview(composition)
-
         // Prepare Buttons that choose layout ...
         createStyleButtons ()
-        
         // Selected
         styleButtons[2].setImage(UIImage(named: "Selected"), for: .normal)
-        
         // Put them in a stack and add to main view
         view.addSubview(stackStyleButtons)
-        
-        // Add arrow
-        view.addSubview(arrow)
-        
-        // Add Instagrid title
-        instagridTitle.image = UIImage(named: "Instagrid")
-        view.addSubview(instagridTitle)
-  
     }
     
     
@@ -89,49 +82,78 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
         }
         
+        autoLayout()
+        
 
     }
     
     override func viewDidLayoutSubviews() {
-        if isLandscape == true {
-            placeStyleButtonsInStack(inAxis: .vertical)
-            
-        } else {
-            placeStyleButtonsInStack(inAxis: .horizontal)
-        }
-        updateArrow()
+        autoLayout()
         updateInstagridTitle()
+        updateArrow()
         
     }
     
     
-    func updateArrow(){
-        var center = CGPoint()
-        let ref = composition.center
-        arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+    func autoLayout() {
+        if isLandscape {
+            composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.maxY - 160)
+            placeStyleButtonsInStack(inAxis: .vertical)
+            
+        }else {
+            composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+            placeStyleButtonsInStack(inAxis: .horizontal)
+        }
         
+        //composition.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
+        
+    
+    }
+    
+
+    func updateArrow() {
+        var center = CGPoint()
+        var ref = CGPoint()
+        var shift = CGPoint()
+        arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+
         if isLandscape{
+            ref = CGPoint(x: composition.frame.minX, y: composition.frame.midY)
+            shift = CGPoint (x : -25, y: 0)
             arrow.image = UIImage(named: "Arrow Left")
-            center = CGPoint(x: view.frame.maxX - ref.x - 150 - 20 - 10 , y: view.frame.midY)
+            center = CGPoint(x: ref.x + shift.x, y: ref.y)
+           
         }
         else{
+            ref = CGPoint(x: composition.frame.midX, y: composition.frame.minY)
+            shift = CGPoint (x : 0, y: -25)
             arrow.image = UIImage(named: "Arrow Up")
-            center = CGPoint(x: view.frame.midX, y: view.frame.maxY - ref.y - 150 - 20 - 10 )
+            center = CGPoint(x: ref.x, y: ref.y + shift.y )
+        
         }
 
         arrow.center = center
-        arrow.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
+       
     }
+    
     
     func updateInstagridTitle(){
         var center = CGPoint()
+        var ref = CGPoint()
+        var shift = CGPoint()
         instagridTitle.frame = CGRect(x: 0, y: 0, width: 116, height: 30)
         
         if isLandscape{
-            center = CGPoint(x: view.frame.midX , y: view.frame.midY - 150 - 15)
+            //center = CGPoint(x: view.frame.midX , y: view.frame.midY - 150 - 15)
+            ref = CGPoint(x: composition.frame.midX, y: composition.frame.minY)
+            shift = CGPoint (x : 0, y: -40)
+            center = CGPoint(x: ref.x, y: ref.y + shift.y )
         }
         else{
-            center = CGPoint(x: view.frame.midX , y: view.frame.minY + 30 + 15 )
+            //center = CGPoint(x: view.frame.midX , y: view.frame.minY + 30 + 15 )
+            ref = CGPoint(x: view.frame.midX, y: view.frame.minY)
+            shift = CGPoint (x : 0, y: 50)
+            center = CGPoint(x: ref.x, y: ref.y + shift.y)
         }
 
         instagridTitle.center = center
@@ -207,15 +229,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // ...Composition moves for began and changed states...
     private func moveCompositionViewWith(gesture: UIPanGestureRecognizer) {
+        let screenBounds = UIScreen.main.bounds
         let translation = gesture.translation(in: composition)
-        if isLandscape == true && translation.x < -0 {
-            composition.transform = CGAffineTransform(translationX: translation.x, y: 0)
+        var translationTransform = CGAffineTransform()
+
+        if isLandscape == true && translation.x < -50{
+            translationTransform = CGAffineTransform(translationX: -screenBounds.width, y: 0)
+            UIView.animate(withDuration: 0.3, animations: {self.composition.transform = translationTransform}, completion: nil)
             gestureOnlyLeftAndUp = true
         }
-        else if isLandscape == false && translation.y < -0 {
-            composition.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        else if isLandscape == false && translation.y < -50{
+            translationTransform = CGAffineTransform(translationX: 0, y: -screenBounds.height)
+            UIView.animate(withDuration: 0.3, animations: {self.composition.transform = translationTransform}, completion: nil)
             gestureOnlyLeftAndUp = true
         }
+            
     }
     
     // ...Then composition is share with cancelled or ended states
@@ -231,7 +259,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         gestureOnlyLeftAndUp = false
 
     }
-   
+    
+
 
     
     // MARK: - ADD USER IMAGE CHOICE IN COMPOSITION
@@ -257,12 +286,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             currentImage = pickedImage
         }
         self.dismiss(animated: true, completion: nil)
         composition.gridLayout[index].setImage(currentImage, for: .normal)
+        composition.imageToShare = composition.asImage()
         
     }
     
@@ -296,22 +325,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         stackStyleButtons.spacing = 30;
         var center = CGPoint()
         var frame = CGRect()
+        var shift = CGPoint()
         
         switch inAxis {
         
         case .horizontal:
             stackStyleButtons.axis = .horizontal
+            shift = CGPoint(x:0,y:-60)
             frame = CGRect(x:0,y:0,width:300,height:80)
-            center = CGPoint(x: view.frame.midX, y: view.frame.maxY - 20 - 40)
+            center = CGPoint(x: view.frame.midX, y: view.frame.maxY + shift.y )
         default:
             stackStyleButtons.axis = .vertical
+            shift = CGPoint(x:-60,y:10)
             frame = CGRect(x:0,y:0,width:80,height:300)
-            center = CGPoint(x: view.frame.maxX - 20 - 40, y: view.frame.midY)
+            center = CGPoint(x: view.frame.maxX + shift.x , y: view.frame.maxY - 160)
         }
         
         stackStyleButtons.frame = frame
         stackStyleButtons.center = center
-        stackStyleButtons.autoresizingMask = [UIView.AutoresizingMask.flexibleLeftMargin, UIView.AutoresizingMask.flexibleRightMargin, UIView.AutoresizingMask.flexibleTopMargin, UIView.AutoresizingMask.flexibleBottomMargin]
+ 
     }
     
     // Change layout
