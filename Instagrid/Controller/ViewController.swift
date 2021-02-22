@@ -132,6 +132,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.dismiss(animated: true, completion: nil)
         composition.images[composition.index].image = composition.currentImage
         composition.buttons[composition.index].setBackgroundImage(UIGraphicsGetImageFromCurrentImageContext(), for: .normal)
+        composition.imageToShare = composition.asImage()
     }
     
     // MARK: - SHARE IMAGE
@@ -149,8 +150,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         default:
             break
         }
-        print (tests.count)
-        print (composition.style)
+
         for i in 0..<tests.count where __CGSizeEqualToSize(tests[i].image!.size , CGSize(width: 0,height: 0)){
                 result = false
                 break
@@ -172,15 +172,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // ...Composition moves for began and changed states...
     private func moveCompositionViewWith(gesture: UIPanGestureRecognizer) {
+        let screenBounds = UIScreen.main.bounds
         let translation = gesture.translation(in: composition)
-        if isLandscape == true && translation.x < -0 {
-            composition.transform = CGAffineTransform(translationX: translation.x, y: 0)
+        var translationTransform = CGAffineTransform()
+
+        if isLandscape == true && translation.x < -50{
+            translationTransform = CGAffineTransform(translationX: -screenBounds.width, y: 0)
+            UIView.animate(withDuration: 0.3, animations: {self.composition.transform = translationTransform}, completion: nil)
             gestureOnlyLeftAndUp = true
         }
-        else if isLandscape == false && translation.y < -0 {
-            composition.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        else if isLandscape == false && translation.y < -50{
+            translationTransform = CGAffineTransform(translationX: 0, y: -screenBounds.height)
+            UIView.animate(withDuration: 0.3, animations: {self.composition.transform = translationTransform}, completion: nil)
             gestureOnlyLeftAndUp = true
         }
+            
     }
     
     // ...Then composition is share with cancelled or ended states
