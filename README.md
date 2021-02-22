@@ -1,7 +1,7 @@
-# INSTAGRID
+# INSTAGRID (UIStackView branch)
 
 This is an exercice from OpenClassrooms.
-Work with the MCV model from apple and develop a responsive application for iOS.
+Work with the MVC architecture and develop a responsive application for iOS.
 
 # SPECIFICATIONS
 
@@ -13,8 +13,5 @@ Work with the MCV model from apple and develop a responsive application for iOS.
 
 # INFOS
 
-I tried to use different ways to build Interface :
-- CompoView is a subclass of UIview, UIImagePickerControllerDelegate, UINavigationControllerDelegate.
-- UI variables are created in code but also in storyboard and referenced with @IBOutlet 
-- UIPanGestureRecognizer(), UIGraphicsImageRenderer(), UIImagePickerController()
+UIStackView Branch : use of stacks in order to layout views.
 
