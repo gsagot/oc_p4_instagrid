@@ -130,8 +130,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             composition.currentImage = pickedImage
         }
         self.dismiss(animated: true, completion: nil)
+        updateComposition()
+    }
+    
+    func updateComposition() {
         composition.images[composition.index].image = composition.currentImage
         composition.buttons[composition.index].setBackgroundImage(UIGraphicsGetImageFromCurrentImageContext(), for: .normal)
+        let currentButtonPosition = composition.buttons[composition.index].center
+        composition.buttons[composition.index].bounds = CGRect(origin: currentButtonPosition, size: CGSize(width: 100, height: 100))
         composition.imageToShare = composition.asImage()
     }
     
