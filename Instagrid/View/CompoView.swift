@@ -28,7 +28,7 @@ class CompoView: UIView {
       }
       
       // Watch properties and update with selection
-      var style: Style = .bigbottom {
+      var style: Style = .standard {
           didSet {
             presentStyle(style)
             imageToShare = asImage()
@@ -102,13 +102,13 @@ class CompoView: UIView {
 
         switch style {
         
-        case .bigbottom:
+        case .bigtop:
             stackHorizontalTop.removeArrangedSubview(gridLayout[1])
             stackHorizontalBottom.addArrangedSubview(gridLayout[3])
             gridLayout[1].isHidden = true
             gridLayout[3].isHidden = false
             
-        case .bigtop:
+        case .bigbottom:
             stackHorizontalBottom.removeArrangedSubview(gridLayout[3])
             stackHorizontalTop.addArrangedSubview(gridLayout[1])
             gridLayout[3].isHidden = true

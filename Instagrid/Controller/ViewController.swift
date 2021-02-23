@@ -207,8 +207,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         default:
             break
         }
+        print(composition.style)
         for i in 0..<tests.count where __CGSizeEqualToSize((tests[i].imageView?.image!.size)! , CGSize(width: 13.5,height: 13.5)){
-            
                 result = false
                 break
         }
@@ -359,10 +359,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         switch sender.tag {
         
         case 0:
-            composition.style = .bigbottom
+            composition.style = .bigtop
             
         case 1:
-            composition.style = .bigtop
+            composition.style = .bigbottom
             
         default:
             composition.style = .standard
