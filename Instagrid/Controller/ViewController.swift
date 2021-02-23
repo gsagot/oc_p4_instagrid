@@ -221,7 +221,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             selectedImageConstraintToUpdate = 30
         case 102:
             composition.style = .bigtop
-            selectedImage.frame = layoutButtonLeft.frame
+            selectedImage.frame = layoutButtonMiddle.frame
             selectedImageConstraintToUpdate = -80
         default:
             composition.style = .standard
@@ -229,11 +229,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             selectedImageConstraintToUpdate = -190
             
         }
-        if isLandscape {
             selectedImageConstraintToUpdateInLanscape.constant = selectedImageConstraintToUpdate
-        }else{
             selectedImageConstraintToUpdateInPortrait.constant = selectedImageConstraintToUpdate
-        }
+        
     }
     
 }
