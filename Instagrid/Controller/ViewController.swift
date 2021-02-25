@@ -40,6 +40,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         changeArrowImageIfLandscape()
         // Layout composition view and all subviews
         composition.layoutCompoViewOnLoad()
+//->    // Set style layout at start
+        composition.style = .bigbottom
         // Add actions to buttons in the controller
         addAction()
 

@@ -31,7 +31,7 @@ class CompoView: UIView {
     }
     
     // Watch properties and update with selection
-    var style: Style = .bigbottom {
+    var style: Style = .standard {
         didSet {
             presentStyle(style)
             imageToShare = asImage()
@@ -50,7 +50,6 @@ class CompoView: UIView {
     func layoutCompoViewOnLoad() {
         layoutImages()
         layoutButtons()
-        style = .bigbottom
     }
     
     
@@ -120,9 +119,10 @@ class CompoView: UIView {
     }
     // Update everything with user choose 
     private func presentStyle(_ style: Style) {
-        reset()
+//->    reset() after style choice
         switch style {
         case .bigtop:
+            reset()
             images[0].frame = CGRect(x:15,y:15,width:270,height:imgSize)
             images[1].frame = CGRect(x:15,y:(imgSize + 30),width:127.5,height:imgSize)
             images[2].isHidden = true
@@ -130,6 +130,7 @@ class CompoView: UIView {
             buttons[1].center = images[1].center
             buttons[2].isHidden = true
         case .bigbottom:
+            reset()
             images[0].frame = CGRect(x:15,y:15,width:imgSize,height:imgSize)
             images[1].frame = CGRect(x:15,y:(imgSize + 30),width:270,height:imgSize)
             images[3].isHidden = true
