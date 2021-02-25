@@ -94,14 +94,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
+    // MARK: - UPDATE !!!
     
     func autoLayout() {
+        // ------
+//->    // UPDATE LAYOUT FROM VIEW TO SAFEAREA FOR BETER USE ON ALL DEVICES
+        // ------
+        let guide = view.safeAreaLayoutGuide.layoutFrame
+        
         if isLandscape {
-            composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.maxY - 160)
+            composition.center = CGPoint(x: guide.midX, y: guide.maxY - 160)
             placeStyleButtonsInStack(inAxis: .vertical)
             
         }else {
-            composition.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+            composition.center = CGPoint(x: guide.midX, y: guide.midY)
             placeStyleButtonsInStack(inAxis: .horizontal)
         }
         
@@ -142,6 +148,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var ref = CGPoint()
         var shift = CGPoint()
         instagridTitle.frame = CGRect(x: 0, y: 0, width: 116, height: 30)
+        // ------
+//->    // UPDATE LAYOUT FROM VIEW TO SAFEAREA FOR BETER USE ON ALL DEVICES
+        // ------
+        let guide = view.safeAreaLayoutGuide.layoutFrame
+     
         
         if isLandscape{
             //center = CGPoint(x: view.frame.midX , y: view.frame.midY - 150 - 15)
@@ -151,7 +162,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         else{
             //center = CGPoint(x: view.frame.midX , y: view.frame.minY + 30 + 15 )
-            ref = CGPoint(x: view.frame.midX, y: view.frame.minY)
+            ref = CGPoint(x: view.frame.midX, y: guide.minY)
             shift = CGPoint (x : 0, y: 50)
             center = CGPoint(x: ref.x, y: ref.y + shift.y)
         }
@@ -326,6 +337,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var center = CGPoint()
         var frame = CGRect()
         var shift = CGPoint()
+        // ------
+//->    // UPDATE LAYOUT FROM VIEW TO SAFEAREA FOR BETER USE ON ALL DEVICES
+        // ------
+        let guide = view.safeAreaLayoutGuide.layoutFrame
         
         switch inAxis {
         
@@ -333,12 +348,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             stackStyleButtons.axis = .horizontal
             shift = CGPoint(x:0,y:-60)
             frame = CGRect(x:0,y:0,width:300,height:80)
-            center = CGPoint(x: view.frame.midX, y: view.frame.maxY + shift.y )
+            center = CGPoint(x: guide.midX, y: guide.maxY + shift.y )
         default:
             stackStyleButtons.axis = .vertical
             shift = CGPoint(x:-60,y:10)
             frame = CGRect(x:0,y:0,width:80,height:300)
-            center = CGPoint(x: view.frame.maxX + shift.x , y: view.frame.maxY - 160)
+            center = CGPoint(x: guide.maxX + shift.x , y: guide.maxY - 160)
         }
         
         stackStyleButtons.frame = frame
